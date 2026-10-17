@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galleria — Gallery</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="fontawesome-free-7.0.1-web/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f1e2e;
+            --coral: #e8603c;
+            --coral2: #f07a58;
+            --cream: #faf7f2;
+            --cream2: #f0ebe2;
+            --white: #fff;
+            --text: #1a1a2e;
+            --muted: #6b7280;
+            --border: rgba(15, 35, 64, .1);
+            --sh: 0 4px 24px rgba(15, 35, 64, .08);
+            --sh2: 0 20px 56px rgba(15, 35, 64, .16);
+            --tr: all .38s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+        }
+
+        em {
+            font-style: italic;
+            color: var(--coral);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--navy), var(--coral));
+            border-radius: 2px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .85s cubic-bezier(.23, 1, .32, 1), transform .85s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .68rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--coral);
+            margin-bottom: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        .section-badge::before,
+        .section-badge::after {
+            content: '';
+            width: 20px;
+            height: 1.5px;
+            background: var(--coral);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: transparent !important;
+            padding: 0;
+            height: auto;
+            transition: background .5s, box-shadow .5s;
+        }
+
+        .navbar.nav-scrolled {
+            background: rgba(13, 26, 39, .97) !important;
+            box-shadow: 0 1px 0 rgba(232, 96, 60, .2), 0 8px 32px rgba(0, 0, 0, .28);
+        }
+
+        .navbar-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 18px 40px;
+            transition: padding .4s;
+        }
+
+        .navbar.nav-scrolled .navbar-container {
+            padding: 13px 40px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: .5px;
+        }
+
+        .brand-tag {
+            font-size: .58rem;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .4);
+            margin-top: 3px;
+        }
+
+        .navbar-nav {
+            gap: 2px;
+            align-items: center;
+        }
+
+        .nav-link {
+            position: relative;
+            font-size: .79rem !important;
+            font-weight: 500 !important;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .78) !important;
+            padding: 9px 15px !important;
+            border-radius: 8px;
+            transition: color .3s, background .3s !important;
+        }
+
+        .nav-link::after {
+            display: none !important;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            background: rgba(232, 96, 60, .1);
+            opacity: 0;
+            transform: scale(.88);
+            transition: opacity .3s, transform .3s;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+        }
+
+        .nav-link:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .nav-link.nav-active {
+            color: var(--coral) !important;
+            background: rgba(232, 96, 60, .1);
+        }
+
+        .nav-chevron {
+            font-size: .55rem;
+            margin-left: 3px;
+            transition: transform .3s;
+        }
+
+        .nav-item.dropdown:hover .nav-chevron {
+            transform: rotate(180deg);
+        }
+
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            animation: dropIn .3s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        @keyframes dropIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-menu {
+            background: #0d1a27 !important;
+            border: 1px solid rgba(232, 96, 60, .18) !important;
+            border-radius: 12px !important;
+            padding: 8px !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .35) !important;
+            min-width: 185px;
+            margin-top: 6px !important;
+        }
+
+        .dropdown-item {
+            color: rgba(255, 255, 255, .72) !important;
+            font-size: .8rem;
+            padding: 10px 15px !important;
+            border-radius: 8px !important;
+            transition: var(--tr);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .dropdown-item i {
+            color: var(--coral);
+            font-size: .75rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(232, 96, 60, .14) !important;
+            color: var(--coral) !important;
+            transform: translateX(4px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-signup {
+            background: var(--coral);
+            color: #fff;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--tr);
+        }
+
+        .btn-signup::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--coral2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .38s ease;
+        }
+
+        .btn-signup span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(232, 96, 60, .42);
+        }
+
+        .btn-signup:hover::before {
+            transform: scaleX(1);
+        }
+
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, .15) !important;
+            border-radius: 8px !important;
+            padding: 8px 11px !important;
+            background: rgba(255, 255, 255, .07) !important;
+            transition: var(--tr);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .navbar-toggler:hover {
+            background: var(--coral) !important;
+            border-color: var(--coral) !important;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none !important;
+        }
+
+        .toggler-line {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        @media(max-width:991px) {
+            .navbar-container {
+                padding: 14px 20px;
+            }
+
+            .navbar-collapse {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                left: auto !important;
+                width: 280px;
+                height: 100vh;
+                background: #0d1a27;
+                border-left: 1px solid rgba(232, 96, 60, .15);
+                padding: 80px 22px 40px;
+                transition: right .42s cubic-bezier(.23, 1, .32, 1) !important;
+                z-index: 1050;
+                overflow-y: auto;
+            }
+
+            .navbar-collapse.show {
+                right: 0 !important;
+                left: auto !important;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-link {
+                padding: 12px 15px !important;
+            }
+
+            .dropdown-menu {
+                position: static !important;
+                background: rgba(255, 255, 255, .04) !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 4px 0 !important;
+                margin: 0 !important;
+                border-radius: 8px !important;
+            }
+
+            .nav-buttons {
+                margin-top: 18px;
+                padding-top: 18px;
+                border-top: 1px solid rgba(232, 96, 60, .15);
+            }
+
+            .btn-signup {
+                width: 100%;
+            }
+        }
+
+        /* AUTH */
+        .register-form-section {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 35, 64, .7);
+            backdrop-filter: blur(8px);
+            display: none;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sign-up-form,
+        .sign-in-form {
+            display: flex;
+            justify-content: center;
+        }
+
+        .auth-card {
+            position: relative;
+            margin-top: 80px;
+            text-align: center;
+            padding: 40px 36px;
+            width: 100%;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 40px 80px rgba(15, 35, 64, .25);
+            animation: authIn .4s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        @keyframes authIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-close-btn {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--cream2);
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--muted);
+            transition: var(--tr);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-close-btn:hover {
+            background: var(--coral);
+            color: #fff;
+        }
+
+        .auth-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .auth-brand span {
+            color: var(--coral);
+        }
+
+        .auth-sub {
+            font-size: .88rem;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .auth-input {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .92rem;
+            color: var(--text);
+            background: var(--cream);
+            outline: none;
+            transition: border-color .3s;
+            margin-bottom: 14px;
+        }
+
+        .auth-input:focus {
+            border-color: var(--navy);
+            background: #fff;
+        }
+
+        .auth-input::placeholder {
+            color: var(--muted);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: var(--navy);
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            font-weight: 600;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--tr);
+            margin-top: 6px;
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--coral);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s ease;
+        }
+
+        .auth-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-btn:hover::before {
+            transform: scaleX(1);
+        }
+
+        .auth-switch {
+            margin-top: 18px;
+            font-size: .85rem;
+            color: var(--muted);
+        }
+
+        .auth-switch a {
+            color: var(--coral);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-forgot {
+            display: block;
+            color: var(--coral);
+            font-size: .82rem;
+            margin-bottom: 16px;
+            text-align: right;
+        }
+
+        /* PAGE HERO */
+        .page-hero {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .page-hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1400&q=80') center/cover no-repeat;
+            filter: brightness(.4) saturate(.8);
+            animation: heroBgZoom 16s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroBgZoom {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.08);
+            }
+        }
+
+        .page-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 35, 64, .75) 0%, rgba(15, 35, 64, .3) 60%, transparent 100%);
+        }
+
+        .page-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .page-hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--coral);
+            margin-bottom: 16px;
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeUp .8s forwards .3s;
+        }
+
+        .page-hero-eyebrow::before,
+        .page-hero-eyebrow::after {
+            content: '';
+            width: 28px;
+            height: 1.5px;
+            background: var(--coral);
+        }
+
+        .page-hero h1 {
+            font-size: clamp(2.4rem, 5vw, 4.5rem);
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeUp 1s forwards .5s;
+        }
+
+        .page-hero p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, .75);
+            max-width: 480px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeUp 1s forwards .75s;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* GALLERY SECTION */
+        .gallery-section {
+            padding: 100px 0;
+            background: var(--cream);
+        }
+
+        .gallery-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Filter bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 56px;
+        }
+
+        .filter-btn {
+            padding: 10px 22px;
+            border: 1.5px solid var(--border);
+            background: var(--white);
+            color: var(--muted);
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .78rem;
+            font-weight: 500;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--tr);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--coral);
+            color: var(--coral);
+        }
+
+        .filter-btn.active {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+            box-shadow: 0 6px 18px rgba(15, 35, 64, .22);
+        }
+
+        /* Masonry grid */
+        .gallery-grid {
+            columns: 3;
+            column-gap: 18px;
+        }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 18px;
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            border: 2px solid transparent;
+            transition: var(--tr);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            transition: transform .6s cubic-bezier(.23, 1, .32, 1), filter .4s;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--coral);
+            box-shadow: var(--sh2);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(.75);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity .4s;
+            background: rgba(15, 35, 64, .45);
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--coral);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            transform: scale(.7);
+            transition: transform .4s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        .gallery-item:hover .gallery-overlay-icon {
+            transform: scale(1);
+        }
+
+        .gallery-overlay-cat {
+            font-size: .65rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .8);
+            font-weight: 600;
+        }
+
+        .gallery-item.hidden {
+            display: none;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 15, 26, .95);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: lbIn .3s ease;
+        }
+
+        @keyframes lbIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .lightbox.show {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .lightbox-content img {
+            max-width: 90vw;
+            max-height: 82vh;
+            border-radius: 12px;
+            object-fit: contain;
+            display: block;
+            animation: lbImgIn .4s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        @keyframes lbImgIn {
+            from {
+                opacity: 0;
+                transform: scale(.92);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .lb-close {
+            position: absolute;
+            top: -16px;
+            right: -16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--coral);
+            border: none;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--tr);
+        }
+
+        .lb-close:hover {
+            background: var(--navy);
+            transform: rotate(90deg);
+        }
+
+        .lb-cat {
+            position: absolute;
+            bottom: -36px;
+            left: 0;
+            font-size: .65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .5);
+        }
+
+        .lb-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .15);
+            color: #fff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--tr);
+            font-size: .9rem;
+            z-index: 99999;
+        }
+
+        .lb-nav:hover {
+            background: var(--coral);
+        }
+
+        .lb-prev {
+            left: 20px;
+        }
+
+        .lb-next {
+            right: 20px;
+        }
+
+        /* No results */
+        #noResults {
+            display: none;
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--muted);
+        }
+
+        #noResults i {
+            font-size: 3.5rem;
+            color: var(--border);
+            margin-bottom: 20px;
+        }
+
+        #noResults h3 {
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            right: -60px;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(232, 96, 60, .05);
+            pointer-events: none;
+        }
+
+        .footer-top-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--coral), transparent);
+            opacity: .5;
+        }
+
+        .footer-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 70px 40px 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2.5fr 1.5fr 2.5fr;
+            gap: 60px;
+        }
+
+        .footer-about h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+
+        .footer-about h3 span {
+            color: var(--coral);
+        }
+
+        .footer-about p {
+            color: rgba(255, 255, 255, .5);
+            font-size: .88rem;
+            margin-bottom: 28px;
+            line-height: 1.85;
+            max-width: 300px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, .6);
+            font-size: .88rem;
+            transition: var(--tr);
+        }
+
+        .social-link:hover {
+            background: var(--coral);
+            color: #fff;
+            border-color: var(--coral);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h4,
+        .footer-contact h4 {
+            font-size: .72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .38);
+            margin-bottom: 22px;
+            position: relative;
+            padding-bottom: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        .footer-links h4::after,
+        .footer-contact h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 24px;
+            height: 1.5px;
+            background: var(--coral);
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, .52);
+            font-size: .88rem;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            transition: var(--tr);
+        }
+
+        .footer-links a i {
+            font-size: .65rem;
+            color: var(--coral);
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+            transform: translateX(4px);
+        }
+
+        .footer-contact p {
+            color: rgba(255, 255, 255, .5);
+            font-size: .85rem;
+            margin-bottom: 18px;
+            line-height: 1.7;
+        }
+
+        .subscribe-box {
+            display: flex;
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .subscribe-box .input {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .85rem;
+            outline: none;
+        }
+
+        .subscribe-box .input::placeholder {
+            color: rgba(255, 255, 255, .28);
+        }
+
+        #footersubscribeBtn {
+            padding: 0 18px;
+            background: var(--coral);
+            border: none;
+            color: #fff;
+            font-size: .95rem;
+            cursor: pointer;
+            transition: var(--tr);
+        }
+
+        #footersubscribeBtn:hover {
+            background: var(--coral2);
+        }
+
+        .footer-bottom {
+            background: rgba(0, 0, 0, .3);
+            padding: 20px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .footer-bottom p {
+            color: rgba(255, 255, 255, .32);
+            font-size: .78rem;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:1100px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .gallery-grid {
+                columns: 2;
+            }
+        }
+
+        @media(max-width:768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                columns: 2;
+            }
+
+            .gallery-container {
+                padding: 0 20px;
+            }
+
+            .page-hero {
+                height: 50vh;
+            }
+        }
+
+        @media(max-width:480px) {
+            .gallery-grid {
+                columns: 1;
+            }
+
+            .filter-btn {
+                font-size: .72rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="navbar">
+        <div class="container-fluid navbar-container">
+            <div class="brand-text">
+                <a href="index.html"><span class="brand-name">Galleria</span></a>
+                <a href="index.html"><span class="brand-tag">Paints</span></a>
+            </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="toggler-line"></span><span class="toggler-line"></span><span class="toggler-line"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav m-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">Paintings <i class="fas fa-chevron-down nav-chevron"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="surface.html"><i class="fas fa-layer-group"></i>
+                                    Surface</a></li>
+                            <li><a class="dropdown-item" href="paintings.html"><i class="fas fa-palette"></i> Color
+                                    Type</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#product-section">Products</a></li>
+                    <li class="nav-item"><a class="nav-link nav-active" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                </ul>
+                <div class="nav-buttons">
+                    <button class="btn-signup" onclick="openSignup()"><span>Sign Up</span></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- AUTH -->
+    <section class="register-form-section" id="registerSection">
+        <div id="sign-up" class="container sign-up-form">
+            <div class="col-md-6 col-lg-4 col-10">
+                <div class="auth-card"><button class="auth-close-btn" onclick="closeSignup()">&times;</button>
+                    <div class="auth-brand">Galler<span>ia</span></div>
+                    <p class="auth-sub">Create your account</p><input type="text" id="signup-name" class="auth-input"
+                        placeholder="Full Name"><input type="text" id="signup-email" class="auth-input"
+                        placeholder="Email Address"><input type="password" id="signup-pass" class="auth-input"
+                        placeholder="Password"><input type="password" id="signup-cpass" class="auth-input"
+                        placeholder="Confirm Password"><button id="register-btn" class="auth-btn"><span>Create
+                            Account</span></button>
+                    <p class="auth-switch">Already have an account? <a id="open-sign-in">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+        <div id="sign-in" class="container sign-in-form d-none">
+            <div class="col-md-6 col-lg-4 col-10">
+                <div class="auth-card"><button class="auth-close-btn" onclick="closeSignup()">&times;</button>
+                    <div class="auth-brand">Galler<span>ia</span></div>
+                    <p class="auth-sub">Great to have you back.</p><input type="text" id="signin-email"
+                        class="auth-input" placeholder="Email Address"><input type="password" id="signin-pass"
+                        class="auth-input" placeholder="Password"><a class="auth-forgot">Forgot password?</a><button
+                        class="auth-btn register-sign-in-btn"><span>Sign In</span></button>
+                    <p class="auth-switch">Don't have an account? <a class="register-sign-up-btn" id="open-sign-up">Sign
+                            Up</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <button class="lb-nav lb-prev" onclick="lbNav(-1)"><i class="fas fa-chevron-left"></i></button>
+        <div class="lightbox-content">
+            <button class="lb-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+            <img id="lbImg" src="" alt="">
+            <div class="lb-cat" id="lbCat"></div>
+        </div>
+        <button class="lb-nav lb-next" onclick="lbNav(1)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <div class="page-hero-bg"></div>
+        <div class="page-hero-overlay"></div>
+        <div class="page-hero-content container">
+            <div class="page-hero-eyebrow">Our Collection</div>
+            <h1>Painting <em style="-webkit-text-fill-color:var(--coral);color:var(--coral);">Gallery</em></h1>
+            <p>Explore our curated collection of fine artworks — filter by style and click to view in full.</p>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery-section">
+        <div class="gallery-container">
+            <div class="section-header reveal">
+                <div class="section-badge">Browse Art</div>
+                <h2>Filter by <em>Category</em></h2>
+            </div>
+
+            <!-- Filter -->
+            <div class="filter-bar reveal">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="abstract">Abstract</button>
+                <button class="filter-btn" data-filter="landscape">Landscape</button>
+                <button class="filter-btn" data-filter="flower">Flower</button>
+                <button class="filter-btn" data-filter="nature">Nature</button>
+                <button class="filter-btn" data-filter="figurative">Figurative</button>
+                <button class="filter-btn" data-filter="religious">Religious</button>
+            </div>
+
+            <!-- Grid -->
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="gallery-item" data-category="landscape"><img
+                        src="https://ids.si.edu/ids/deliveryService?id=SAAM-1977.107.1_2&max_w=550" alt="Landscape">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Landscape</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="abstract"><img
+                        src="https://i.pinimg.com/736x/28/13/49/28134909645d6e9e7f5dce9cd29af92f.jpg" alt="Abstract">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Abstract</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="nature"><img
+                        src="https://www.jiomart.com/images/product/original/rvvgf4rnmz/elegance-beautiful-nature-landscape-digital-canvas-painting-big-unframed-canvas-48-x-32-inch-product-images-orvvgf4rnmz-p598467660-0-202302171032.jpg?im=Resize=(1000,1000)"
+                        alt="Nature">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Nature</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="landscape"><img
+                        src="https://render.fineartamerica.com/images/rendered/medium/print/10/7.5/break/images-medium-5/space-for-reflection-chuck-pinson.jpg"
+                        alt="Landscape">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Landscape</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="figurative"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXlfNqmv2zMd2PKuZdQUveaTFYLpO2avpC_A&s"
+                        alt="Figurative">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Figurative</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="nature"><img
+                        src="https://www.artzfolio.com/cdn/shop/products/AZ5000385PRE_UN_RF_01_A_UN_2bd3d3af-d45f-4e1c-9465-cc6a3563ef15_1000x.jpg?v=1667632789"
+                        alt="Nature">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Nature</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="abstract"><img
+                        src="https://i.pinimg.com/736x/bb/c3/58/bbc3584aa1b6b9f20e368716fd540d75.jpg" alt="Abstract">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Abstract</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="landscape"><img
+                        src="https://storage.googleapis.com/pod_public/1300/234269.jpg" alt="Landscape">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Landscape</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="abstract"><img
+                        src="https://plus.unsplash.com/premium_photo-1664438942574-e56510dc5ce5?fm=jpg&q=60&w=3000"
+                        alt="Abstract">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Abstract</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="landscape"><img
+                        src="https://img.freepik.com/premium-photo/photo-quill-pen-ink-well-empty-desk-symbolizing-artistry-writing-with-feathered-pens-web-banner-with-empty-space-left-side-style-copy-space_1256366-31778.jpg?semt=ais_hybrid&w=740&q=80"
+                        alt="Landscape">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Landscape</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="religious"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJw5n8wH8XZNw9oZNXsq662G5YvYAUvQufDg&s"
+                        alt="Religious">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Religious</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="abstract"><img
+                        src="https://osnatfineart.com/artworks/full/painting-4403-1-beautiful-abstract-art-on-canvas-modern-colorful-best-living-room-wall-art.webp"
+                        alt="Abstract">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Abstract</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="flower"><img
+                        src="https://webneel.com/daily/sites/default/files/images/daily/11-2013/10-flower-paintings.jpg"
+                        alt="Flower">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Flower</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="nature"><img
+                        src="https://www.collettivovv.org/wp-content/uploads/2020/05/Nature-paintings.jpg" alt="Nature">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Nature</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="abstract"><img
+                        src="https://m.media-amazon.com/images/I/71VW72uQqKL._AC_UF894,1000_QL80_.jpg" alt="Abstract">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Abstract</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="landscape"><img
+                        src="https://i.ytimg.com/vi/cFVevL54vYA/hq720.jpg" alt="Landscape">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Landscape</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="figurative"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9FQh07zASbNr_bE-5oH58oJgogABjGVYRSg&s"
+                        alt="Figurative">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Figurative</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="flower"><img
+                        src="https://leondevenice.com/cdn/shop/files/Colorful-Abstract-Flowers-by-Leon-Devenice.jpg?v=1694118475"
+                        alt="Flower">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Flower</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="religious"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlcMfT6hYXg4mpCoCsz_CsiqgJJXdt9aTOog&s"
+                        alt="Religious">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Religious</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="landscape"><img
+                        src="https://urartstudio.com/wp-content/uploads/2021/08/SUNET-LANDSCAPE-PAINTING-BY-PETER-DRANITSIN-04.jpg"
+                        alt="Landscape">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Landscape</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="flower"><img
+                        src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80" alt="Flower">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Flower</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="figurative"><img
+                        src="https://contemporaryartandartist.wordpress.com/wp-content/uploads/2017/01/figurative-art.jpg"
+                        alt="Figurative">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Figurative</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="nature"><img
+                        src="https://www.indiaart.com/Paintings/5417/large/13486.jpg.ashx?height=350" alt="Nature">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Nature</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="religious"><img
+                        src="https://i.pinimg.com/236x/89/5e/ea/895eea31725b21b9bdc19812ff28c024.jpg" alt="Religious">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-overlay-icon"><i class="fas fa-expand"></i></div>
+                        <div class="gallery-overlay-cat">Religious</div>
+                    </div>
+                </div>
+            </div>
+            <div id="noResults">
+                <i class="fas fa-search"></i>
+                <h3>No paintings found</h3>
+                <p>Try selecting a different category</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-top-line"></div>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>Galler<span>ia</span></h3>
+                    <p>Pakistan's finest paint brand — delivering premium quality, vibrant colors, and lasting finishes
+                        for every surface.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+                        <li><a href="paintings.html"><i class="fas fa-chevron-right"></i> Paintings</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Stay Updated</h4>
+                    <p>Get promotions, new products and exclusive deals delivered to your inbox.</p>
+                    <div class="subscribe-box">
+                        <input type="text" placeholder="Enter your email..." id="subscribeInput" class="input">
+                        <button id="footersubscribeBtn"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container-fluid">
+                <p>&copy; 2026 Galleria Paints — All Rights Reserved &nbsp;|&nbsp; Made with <span
+                        style="color:var(--coral);">♥</span> in Pakistan</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="jquerydownload.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script>
+        window.addEventListener('scroll', function () { document.getElementById('navbar').classList.toggle('nav-scrolled', window.scrollY > 60); }, { passive: true });
+        function openSignup() { var s = document.getElementById('registerSection'); s.style.display = 'flex'; setTimeout(function () { s.style.opacity = '1'; }, 10); }
+        function closeSignup() { var s = document.getElementById('registerSection'); s.style.opacity = '0'; setTimeout(function () { s.style.display = 'none'; s.style.opacity = ''; }, 300); }
+        document.getElementById('registerSection').addEventListener('click', function (e) { if (e.target === this) closeSignup(); });
+        function showToast(msg, type) { var t = document.createElement('div'); t.style.cssText = 'position:fixed;bottom:28px;right:28px;background:' + (type === 'error' ? '#e8603c' : '#0f1e2e') + ';color:#fff;padding:14px 22px;border-radius:10px;font-family:DM Sans,sans-serif;font-size:.88rem;z-index:999999;box-shadow:0 8px 28px rgba(0,0,0,.22);display:flex;align-items:center;gap:10px;border-left:3px solid ' + (type === 'error' ? '#fff' : '#e8603c') + ';max-width:320px;'; t.innerHTML = '<i class="fas ' + (type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle') + '" style="color:' + (type === 'error' ? '#fff' : '#e8603c') + '"></i>' + msg; document.body.appendChild(t); setTimeout(function () { t.style.transition = 'opacity .4s'; t.style.opacity = '0'; setTimeout(function () { t.remove(); }, 400); }, 2800); }
+        $(document).ready(function () {
+            $('#register-btn').click(function () { var n = $('#signup-name').val().trim(), e = $('#signup-email').val().trim(), p = $('#signup-pass').val(), c = $('#signup-cpass').val(); if (!n || !e || !p || !c) { showToast('All fields are required!', 'error'); return; } if (p !== c) { showToast('Passwords do not match!', 'error'); return; } showToast('Registration Successful!', 'success'); $('#signup-name,#signup-email,#signup-pass,#signup-cpass').val(''); setTimeout(closeSignup, 1200); });
+            $('.register-sign-in-btn').click(function () { var e = $('#signin-email').val().trim(), p = $('#signin-pass').val(); if (!e || !p) { showToast('Please fill all fields!', 'error'); return; } showToast('Signed in successfully!', 'success'); setTimeout(closeSignup, 1200); });
+            $('#open-sign-in').click(function (e) { e.preventDefault(); $('#sign-up').fadeOut(250, function () { $('#sign-in').removeClass('d-none').fadeIn(250); }); });
+            $('#open-sign-up').click(function (e) { e.preventDefault(); $('#sign-in').fadeOut(250, function () { $('#sign-up').removeClass('d-none').fadeIn(250); }); });
+            $('#footersubscribeBtn').click(function () { var v = $('#subscribeInput').val().trim(); if (!v) { showToast('Please enter your email!', 'error'); return; } showToast('Thanks for subscribing!', 'success'); $('#subscribeInput').val(''); });
+        });
+        /* GALLERY FILTER */
+        var allItems = [];
+        document.addEventListener('DOMContentLoaded', function () {
+            var obs = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); } }); }, { threshold: .08 });
+            document.querySelectorAll('.reveal').forEach(function (el) { obs.observe(el); });
+            allItems = Array.from(document.querySelectorAll('.gallery-item'));
+            /* stagger on load */
+            allItems.forEach(function (item, i) { item.style.opacity = '0'; item.style.transform = 'translateY(20px)'; item.style.transition = 'opacity .5s ease ' + (i * .04) + 's, transform .5s ease ' + (i * .04) + 's'; setTimeout(function () { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 80 + i * 40); });
+            /* click to lightbox */
+            allItems.forEach(function (item, idx) {
+                item.addEventListener('click', function () { openLightbox(idx); });
+            });
+            /* filter buttons */
+            document.querySelectorAll('.filter-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    var f = btn.dataset.filter;
+                    var visible = 0;
+                    allItems.forEach(function (item, i) {
+                        var show = (f === 'all' || item.dataset.category === f);
+                        if (show) { item.style.display = ''; item.style.opacity = '0'; item.style.transform = 'translateY(16px)'; setTimeout(function () { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, i * 30); visible++; }
+                        else { item.style.display = 'none'; }
+                    });
+                    document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+                });
+            });
+        });
+        /* LIGHTBOX */
+        var lbIndex = 0;
+        var lbVisible = [];
+        function openLightbox(idx) {
+            lbVisible = allItems.filter(function (i) { return i.style.display !== 'none'; });
+            lbIndex = lbVisible.indexOf(allItems[idx]);
+            if (lbIndex === -1) lbIndex = 0;
+            updateLightbox();
+            document.getElementById('lightbox').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); document.body.style.overflow = ''; }
+        function lbNav(dir) { lbIndex = (lbIndex + dir + lbVisible.length) % lbVisible.length; updateLightbox(); }
+        function updateLightbox() { var item = lbVisible[lbIndex]; if (!item) return; document.getElementById('lbImg').src = item.querySelector('img').src; document.getElementById('lbCat').textContent = item.dataset.category.toUpperCase(); }
+        document.getElementById('lightbox').addEventListener('click', function (e) { if (e.target === this) closeLightbox(); });
+        document.addEventListener('keydown', function (e) { var lb = document.getElementById('lightbox'); if (!lb.classList.contains('show')) return; if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowLeft') lbNav(-1); if (e.key === 'ArrowRight') lbNav(1); });
+    </script>
+</body>
+
+</html>

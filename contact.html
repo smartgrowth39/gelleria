@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galleria — Contact Us</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="fontawesome-free-7.0.1-web/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f1e2e;
+            --navy2: #162d50;
+            --coral: #e8603c;
+            --coral2: #f07a58;
+            --cream: #faf7f2;
+            --cream2: #f0ebe2;
+            --white: #fff;
+            --text: #1a1a2e;
+            --muted: #6b7280;
+            --border: rgba(15, 35, 64, .1);
+            --sh: 0 4px 24px rgba(15, 35, 64, .08);
+            --sh2: 0 20px 56px rgba(15, 35, 64, .16);
+            --tr: all .38s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+        }
+
+        em {
+            font-style: italic;
+            color: var(--coral);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--navy), var(--coral));
+            border-radius: 2px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .85s cubic-bezier(.23, 1, .32, 1), transform .85s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity .85s cubic-bezier(.23, 1, .32, 1), transform .85s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        .reveal-left.in-view {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity .85s cubic-bezier(.23, 1, .32, 1), transform .85s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        .reveal-right.in-view {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-child {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+
+        .reveal-child.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-child:nth-child(2) {
+            transition-delay: .1s;
+        }
+
+        .reveal-child:nth-child(3) {
+            transition-delay: .2s;
+        }
+
+        .reveal-child:nth-child(4) {
+            transition-delay: .3s;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .68rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--coral);
+            margin-bottom: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        .section-badge::before,
+        .section-badge::after {
+            content: '';
+            width: 20px;
+            height: 1.5px;
+            background: var(--coral);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: transparent !important;
+            padding: 0;
+            height: auto;
+            transition: background .5s, box-shadow .5s;
+        }
+
+        .navbar.nav-scrolled {
+            background: rgba(13, 26, 39, .97) !important;
+            box-shadow: 0 1px 0 rgba(232, 96, 60, .2), 0 8px 32px rgba(0, 0, 0, .28);
+        }
+
+        .navbar-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 18px 40px;
+            transition: padding .4s;
+        }
+
+        .navbar.nav-scrolled .navbar-container {
+            padding: 13px 40px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: .5px;
+        }
+
+        .brand-tag {
+            font-size: .58rem;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .4);
+            margin-top: 3px;
+        }
+
+        .navbar-nav {
+            gap: 2px;
+            align-items: center;
+        }
+
+        .nav-link {
+            position: relative;
+            font-size: .79rem !important;
+            font-weight: 500 !important;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .78) !important;
+            padding: 9px 15px !important;
+            border-radius: 8px;
+            transition: color .3s, background .3s !important;
+        }
+
+        .nav-link::after {
+            display: none !important;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            background: rgba(232, 96, 60, .1);
+            opacity: 0;
+            transform: scale(.88);
+            transition: opacity .3s, transform .3s;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+        }
+
+        .nav-link:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .nav-link.nav-active {
+            color: var(--coral) !important;
+            background: rgba(232, 96, 60, .1);
+        }
+
+        .nav-chevron {
+            font-size: .55rem;
+            margin-left: 3px;
+            transition: transform .3s;
+        }
+
+        .nav-item.dropdown:hover .nav-chevron {
+            transform: rotate(180deg);
+        }
+
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            animation: dropIn .3s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        @keyframes dropIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-menu {
+            background: #0d1a27 !important;
+            border: 1px solid rgba(232, 96, 60, .18) !important;
+            border-radius: 12px !important;
+            padding: 8px !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .35) !important;
+            min-width: 185px;
+            margin-top: 6px !important;
+        }
+
+        .dropdown-item {
+            color: rgba(255, 255, 255, .72) !important;
+            font-size: .8rem;
+            padding: 10px 15px !important;
+            border-radius: 8px !important;
+            transition: var(--tr);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .dropdown-item i {
+            color: var(--coral);
+            font-size: .75rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(232, 96, 60, .14) !important;
+            color: var(--coral) !important;
+            transform: translateX(4px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-signup {
+            background: var(--coral);
+            color: #fff;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--tr);
+        }
+
+        .btn-signup::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--coral2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .38s ease;
+        }
+
+        .btn-signup span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(232, 96, 60, .42);
+        }
+
+        .btn-signup:hover::before {
+            transform: scaleX(1);
+        }
+
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, .15) !important;
+            border-radius: 8px !important;
+            padding: 8px 11px !important;
+            background: rgba(255, 255, 255, .07) !important;
+            transition: var(--tr);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .navbar-toggler:hover {
+            background: var(--coral) !important;
+            border-color: var(--coral) !important;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none !important;
+        }
+
+        .toggler-line {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        @media(max-width:991px) {
+            .navbar-container {
+                padding: 14px 20px;
+            }
+
+            .navbar-collapse {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                left: auto !important;
+                width: 280px;
+                height: 100vh;
+                background: #0d1a27;
+                border-left: 1px solid rgba(232, 96, 60, .15);
+                padding: 80px 22px 40px;
+                transition: right .42s cubic-bezier(.23, 1, .32, 1) !important;
+                z-index: 1050;
+                overflow-y: auto;
+            }
+
+            .navbar-collapse.show {
+                right: 0 !important;
+                left: auto !important;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-link {
+                padding: 12px 15px !important;
+            }
+
+            .dropdown-menu {
+                position: static !important;
+                background: rgba(255, 255, 255, .04) !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 4px 0 !important;
+                margin: 0 !important;
+                border-radius: 8px !important;
+            }
+
+            .nav-buttons {
+                margin-top: 18px;
+                padding-top: 18px;
+                border-top: 1px solid rgba(232, 96, 60, .15);
+            }
+
+            .btn-signup {
+                width: 100%;
+            }
+        }
+
+        /* AUTH */
+        .register-form-section {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 35, 64, .7);
+            backdrop-filter: blur(8px);
+            display: none;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sign-up-form,
+        .sign-in-form {
+            display: flex;
+            justify-content: center;
+        }
+
+        .auth-card {
+            position: relative;
+            margin-top: 80px;
+            text-align: center;
+            padding: 40px 36px;
+            width: 100%;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 40px 80px rgba(15, 35, 64, .25);
+            animation: authIn .4s cubic-bezier(.23, 1, .32, 1);
+        }
+
+        @keyframes authIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-close-btn {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--cream2);
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--muted);
+            transition: var(--tr);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-close-btn:hover {
+            background: var(--coral);
+            color: #fff;
+        }
+
+        .auth-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .auth-brand span {
+            color: var(--coral);
+        }
+
+        .auth-sub {
+            font-size: .88rem;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .auth-input {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .92rem;
+            color: var(--text);
+            background: var(--cream);
+            outline: none;
+            transition: border-color .3s;
+            margin-bottom: 14px;
+        }
+
+        .auth-input:focus {
+            border-color: var(--navy);
+            background: #fff;
+        }
+
+        .auth-input::placeholder {
+            color: var(--muted);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: var(--navy);
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            font-weight: 600;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--tr);
+            margin-top: 6px;
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--coral);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s ease;
+        }
+
+        .auth-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-btn:hover::before {
+            transform: scaleX(1);
+        }
+
+        .auth-switch {
+            margin-top: 18px;
+            font-size: .85rem;
+            color: var(--muted);
+        }
+
+        .auth-switch a {
+            color: var(--coral);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-forgot {
+            display: block;
+            color: var(--coral);
+            font-size: .82rem;
+            margin-bottom: 16px;
+            text-align: right;
+        }
+
+        /* PAGE HERO */
+        .page-hero {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .page-hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxHR27yPVCI8y-JsboFchHQmreEUBK95FK6w&s') center/cover no-repeat;
+            filter: brightness(.4) saturate(.8);
+            animation: heroBgZoom 16s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroBgZoom {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.08);
+            }
+        }
+
+        .page-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 35, 64, .75) 0%, rgba(15, 35, 64, .3) 60%, transparent 100%);
+        }
+
+        .page-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .page-hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--coral);
+            margin-bottom: 16px;
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeUp .8s forwards .3s;
+        }
+
+        .page-hero-eyebrow::before,
+        .page-hero-eyebrow::after {
+            content: '';
+            width: 28px;
+            height: 1.5px;
+            background: var(--coral);
+        }
+
+        .page-hero h1 {
+            font-size: clamp(2.4rem, 5vw, 4.5rem);
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeUp 1s forwards .5s;
+        }
+
+        .page-hero p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, .75);
+            max-width: 480px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeUp 1s forwards .75s;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CONTACT INFO CARDS */
+        .contact-section {
+            padding: 100px 0;
+            background: var(--cream);
+        }
+
+        .contact-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 40px;
+        }
+
+        .contact-info-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: var(--tr);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--coral), var(--coral2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .5s;
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--sh2);
+            border-color: rgba(232, 96, 60, .2);
+        }
+
+        .contact-info-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .contact-card-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--navy);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            transition: var(--tr);
+        }
+
+        .contact-card-icon i {
+            font-size: 1.2rem;
+            color: var(--coral);
+        }
+
+        .contact-info-card:hover .contact-card-icon {
+            background: var(--coral);
+        }
+
+        .contact-info-card:hover .contact-card-icon i {
+            color: #fff;
+        }
+
+        .contact-info-card h4 {
+            font-size: 1rem;
+            color: var(--navy);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .contact-info-card p {
+            font-size: .88rem;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        /* MAIN CONTACT GRID */
+        .contact-main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* MAP */
+        .contact-map-wrap {
+            border-radius: 20px;
+            overflow: hidden;
+            height: 460px;
+            box-shadow: var(--sh2);
+            border: 1px solid var(--border);
+        }
+
+        .contact-map-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* CONTACT FORM */
+        .contact-form-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px 40px;
+            position: relative;
+        }
+
+        .contact-form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--coral), var(--coral2), var(--coral));
+            background-size: 200% auto;
+            animation: gradShift 4s linear infinite;
+            border-radius: 20px 20px 0 0;
+        }
+
+        @keyframes gradShift {
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .form-label-g {
+            display: block;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .form-input-g {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .92rem;
+            color: var(--text);
+            background: var(--cream);
+            outline: none;
+            transition: border-color .3s;
+            margin-bottom: 20px;
+        }
+
+        .form-input-g:focus {
+            border-color: var(--coral);
+            background: #fff;
+        }
+
+        .form-input-g::placeholder {
+            color: var(--muted);
+        }
+
+        .form-input-g.textarea-g {
+            min-height: 120px;
+            resize: none;
+        }
+
+        .form-input-g.select-g {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .submit-btn-g {
+            width: 100%;
+            padding: 15px;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .85rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--tr);
+        }
+
+        .submit-btn-g::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--coral);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s ease;
+        }
+
+        .submit-btn-g span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .submit-btn-g:hover::before {
+            transform: scaleX(1);
+        }
+
+        .submit-btn-g:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(232, 96, 60, .38);
+        }
+
+        /* FAQ */
+        .faq-section {
+            padding: 100px 0;
+            background: var(--white);
+        }
+
+        .faq-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .faq-item {
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border-left: 3px solid var(--coral);
+            transition: var(--tr);
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--sh);
+        }
+
+        .faq-btn {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 18px 22px;
+            text-align: left;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: .95rem;
+            color: var(--navy);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: var(--tr);
+        }
+
+        .faq-btn i {
+            font-size: .7rem;
+            color: var(--coral);
+            transition: transform .3s;
+            flex-shrink: 0;
+        }
+
+        .faq-btn:not(.collapsed) {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .faq-btn:not(.collapsed) i {
+            color: var(--coral2);
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 16px 22px 20px;
+            font-size: .9rem;
+            color: var(--muted);
+            line-height: 1.85;
+            background: rgba(232, 96, 60, .03);
+            border-top: 1px solid var(--border);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            right: -60px;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(232, 96, 60, .05);
+            pointer-events: none;
+        }
+
+        .footer-top-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--coral), transparent);
+            opacity: .5;
+        }
+
+        .footer-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 70px 40px 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2.5fr 1.5fr 2.5fr;
+            gap: 60px;
+        }
+
+        .footer-about h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+
+        .footer-about h3 span {
+            color: var(--coral);
+        }
+
+        .footer-about p {
+            color: rgba(255, 255, 255, .5);
+            font-size: .88rem;
+            margin-bottom: 28px;
+            line-height: 1.85;
+            max-width: 300px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, .6);
+            font-size: .88rem;
+            transition: var(--tr);
+        }
+
+        .social-link:hover {
+            background: var(--coral);
+            color: #fff;
+            border-color: var(--coral);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h4,
+        .footer-contact h4 {
+            font-size: .72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .38);
+            margin-bottom: 22px;
+            position: relative;
+            padding-bottom: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        .footer-links h4::after,
+        .footer-contact h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 24px;
+            height: 1.5px;
+            background: var(--coral);
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, .52);
+            font-size: .88rem;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            transition: var(--tr);
+        }
+
+        .footer-links a i {
+            font-size: .65rem;
+            color: var(--coral);
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+            transform: translateX(4px);
+        }
+
+        .footer-contact p {
+            color: rgba(255, 255, 255, .5);
+            font-size: .85rem;
+            margin-bottom: 18px;
+            line-height: 1.7;
+        }
+
+        .subscribe-box {
+            display: flex;
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .subscribe-box .input {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .85rem;
+            outline: none;
+        }
+
+        .subscribe-box .input::placeholder {
+            color: rgba(255, 255, 255, .28);
+        }
+
+        #footersubscribeBtn {
+            padding: 0 18px;
+            background: var(--coral);
+            border: none;
+            color: #fff;
+            font-size: .95rem;
+            cursor: pointer;
+            transition: var(--tr);
+        }
+
+        #footersubscribeBtn:hover {
+            background: var(--coral2);
+        }
+
+        .footer-bottom {
+            background: rgba(0, 0, 0, .3);
+            padding: 20px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .footer-bottom p {
+            color: rgba(255, 255, 255, .32);
+            font-size: .78rem;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:1100px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .contact-info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:991px) {
+            .contact-main-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 0 24px;
+            }
+
+            .contact-info-grid {
+                padding: 0 24px;
+            }
+
+            .footer-container {
+                padding: 60px 24px 40px;
+            }
+        }
+
+        @media(max-width:768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .contact-map-wrap {
+                height: 300px;
+            }
+
+            .contact-form-card {
+                padding: 28px 22px;
+            }
+
+            .page-hero {
+                height: 50vh;
+            }
+        }
+
+        @media(max-width:480px) {
+            .contact-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="navbar">
+        <div class="container-fluid navbar-container">
+            <div class="brand-text">
+                <a href="index.html"><span class="brand-name">Galleria</span></a>
+                <a href="index.html"><span class="brand-tag">Paints</span></a>
+            </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="toggler-line"></span>
+                <span class="toggler-line"></span>
+                <span class="toggler-line"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav m-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">Paintings <i class="fas fa-chevron-down nav-chevron"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="surface.html"><i class="fas fa-layer-group"></i>
+                                    Surface</a></li>
+                            <li><a class="dropdown-item" href="paintings.html"><i class="fas fa-palette"></i> Color
+                                    Type</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#product-section">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link nav-active" href="contact.html">Contact Us</a></li>
+                </ul>
+                <div class="nav-buttons">
+                    <button class="btn-signup" onclick="openSignup()"><span>Sign Up</span></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- AUTH -->
+    <section class="register-form-section" id="registerSection">
+        <div id="sign-up" class="container sign-up-form">
+            <div class="col-md-6 col-lg-4 col-10">
+                <div class="auth-card">
+                    <button class="auth-close-btn" onclick="closeSignup()">&times;</button>
+                    <div class="auth-brand">Galler<span>ia</span></div>
+                    <p class="auth-sub">Create your account</p>
+                    <input type="text" id="signup-name" class="auth-input" placeholder="Full Name">
+                    <input type="text" id="signup-email" class="auth-input" placeholder="Email Address">
+                    <input type="password" id="signup-pass" class="auth-input" placeholder="Password">
+                    <input type="password" id="signup-cpass" class="auth-input" placeholder="Confirm Password">
+                    <button id="register-btn" class="auth-btn"><span>Create Account</span></button>
+                    <p class="auth-switch">Already have an account? <a id="open-sign-in">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+        <div id="sign-in" class="container sign-in-form d-none">
+            <div class="col-md-6 col-lg-4 col-10">
+                <div class="auth-card">
+                    <button class="auth-close-btn" onclick="closeSignup()">&times;</button>
+                    <div class="auth-brand">Galler<span>ia</span></div>
+                    <p class="auth-sub">Great to have you back.</p>
+                    <input type="text" id="signin-email" class="auth-input" placeholder="Email Address">
+                    <input type="password" id="signin-pass" class="auth-input" placeholder="Password">
+                    <a class="auth-forgot">Forgot password?</a>
+                    <button class="auth-btn register-sign-in-btn"><span>Sign In</span></button>
+                    <p class="auth-switch">Don't have an account? <a class="register-sign-up-btn" id="open-sign-up">Sign
+                            Up</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <div class="page-hero-bg"></div>
+        <div class="page-hero-overlay"></div>
+        <div class="page-hero-content container">
+            <div class="page-hero-eyebrow">Get In Touch</div>
+            <h1>Contact <em style="-webkit-text-fill-color:var(--coral);color:var(--coral);">Galleria</em></h1>
+            <p>We're here to help. Reach out for orders, consultations, or just to say hello.</p>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact-section">
+        <!-- Info Cards -->
+        <div class="contact-info-grid reveal">
+            <div class="contact-info-card reveal-child">
+                <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <h4>Our Location</h4>
+                <p>Sharah-e-Faisal, Karachi<br>Sindh, Pakistan</p>
+            </div>
+            <div class="contact-info-card reveal-child">
+                <div class="contact-card-icon"><i class="fas fa-phone-alt"></i></div>
+                <h4>Phone Number</h4>
+                <p>+92 300 1234567<br>08000-1973</p>
+            </div>
+            <div class="contact-info-card reveal-child">
+                <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
+                <h4>Email Address</h4>
+                <p>info@galleria.com<br>support@galleria.com</p>
+            </div>
+            <div class="contact-info-card reveal-child">
+                <div class="contact-card-icon"><i class="fas fa-clock"></i></div>
+                <h4>Business Hours</h4>
+                <p>Mon – Sat: 9AM – 6PM<br>Sunday: Closed</p>
+            </div>
+        </div>
+
+        <!-- Map + Form -->
+        <div class="contact-main-grid">
+            <div class="reveal-left">
+                <div class="section-badge" style="justify-content:flex-start;margin-bottom:16px;">Find Us</div>
+                <h2 style="margin-bottom:24px;">We Are Located in <em>Karachi</em></h2>
+                <div class="contact-map-wrap">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d462565.91124857265!2d67.15546244999999!3d25.193202349999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06651d4bbf%3A0x9cf92f44555a0c23!2sKarachi%2C%20Karachi%20City%2C%20Sindh%2C%20Pakistan!5e0!3m2!1sen!2s!4v1234567890"
+                        allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="reveal-right">
+                <div class="contact-form-card">
+                    <div class="section-badge" style="justify-content:flex-start;margin-bottom:12px;">Message Us</div>
+                    <h2 style="margin-bottom:28px;">Send Us a <em>Message</em></h2>
+                    <form id="contactForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label-g">Full Name</label>
+                                <input type="text" class="form-input-g" id="c-name" placeholder="Your full name"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label-g">Email Address</label>
+                                <input type="email" class="form-input-g" id="c-email" placeholder="your@email.com"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label-g">Phone Number</label>
+                                <input type="tel" class="form-input-g" id="c-phone" placeholder="+92 xxx xxxxxxx">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label-g">Subject</label>
+                                <select class="form-input-g select-g" id="c-subject" required>
+                                    <option value="">Select a subject</option>
+                                    <option>General Inquiry</option>
+                                    <option>Custom Order</option>
+                                    <option>Order Status</option>
+                                    <option>Feedback</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label-g">Your Message</label>
+                                <textarea class="form-input-g textarea-g" id="c-message"
+                                    placeholder="Write your message here..." required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn-g mt-2"><span><i
+                                    class="fas fa-paper-plane me-2"></i>Send Message</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="faq-wrapper">
+            <div class="section-header reveal">
+                <div class="section-badge">FAQ</div>
+                <h2>Frequently Asked <em>Questions</em></h2>
+            </div>
+            <div id="contactFaq" class="reveal">
+                <div class="faq-item"><button class="faq-btn collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#cf1">What types of paints does Galleria offer? <i
+                            class="fas fa-chevron-down"></i></button>
+                    <div id="cf1" class="accordion-collapse collapse" data-bs-parent="#contactFaq">
+                        <div class="faq-answer">Galleria offers a complete range including acrylic, oil, watercolor,
+                            metallic, and decorative wall paints for all needs.</div>
+                    </div>
+                </div>
+                <div class="faq-item"><button class="faq-btn collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#cf2">Are Galleria paints suitable for professionals? <i
+                            class="fas fa-chevron-down"></i></button>
+                    <div id="cf2" class="accordion-collapse collapse" data-bs-parent="#contactFaq">
+                        <div class="faq-answer">Yes, our paints are made with high-quality materials suitable for
+                            beginners, professional artists, and commercial painters.</div>
+                    </div>
+                </div>
+                <div class="faq-item"><button class="faq-btn collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#cf3">Do you provide paints for commercial projects? <i
+                            class="fas fa-chevron-down"></i></button>
+                    <div id="cf3" class="accordion-collapse collapse" data-bs-parent="#contactFaq">
+                        <div class="faq-answer">Yes, we supply paints for home interiors, exterior walls, offices, and
+                            large commercial painting projects.</div>
+                    </div>
+                </div>
+                <div class="faq-item"><button class="faq-btn collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#cf4">Can I get help choosing the right paint? <i
+                            class="fas fa-chevron-down"></i></button>
+                    <div id="cf4" class="accordion-collapse collapse" data-bs-parent="#contactFaq">
+                        <div class="faq-answer">Yes, our experienced team helps you select the right paint type, color,
+                            and finish for your project requirements.</div>
+                    </div>
+                </div>
+                <div class="faq-item"><button class="faq-btn collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#cf5">Do you offer bulk or wholesale orders? <i
+                            class="fas fa-chevron-down"></i></button>
+                    <div id="cf5" class="accordion-collapse collapse" data-bs-parent="#contactFaq">
+                        <div class="faq-answer">Yes, Galleria provides special pricing and reliable supply for bulk and
+                            wholesale paint orders.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-top-line"></div>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>Galler<span>ia</span></h3>
+                    <p>Pakistan's finest paint brand — delivering premium quality, vibrant colors, and lasting finishes
+                        for every surface.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+                        <li><a href="paintings.html"><i class="fas fa-chevron-right"></i> Paintings</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Stay Updated</h4>
+                    <p>Get promotions, new products and exclusive deals delivered to your inbox.</p>
+                    <div class="subscribe-box">
+                        <input type="text" placeholder="Enter your email..." id="subscribeInput" class="input">
+                        <button id="footersubscribeBtn"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container-fluid">
+                <p>&copy; 2026 Galleria Paints — All Rights Reserved &nbsp;|&nbsp; Made with <span
+                        style="color:var(--coral);">♥</span> in Pakistan</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="jquerydownload.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script>
+        window.addEventListener('scroll', function () { document.getElementById('navbar').classList.toggle('nav-scrolled', window.scrollY > 60); }, { passive: true });
+        function openSignup() { var s = document.getElementById('registerSection'); s.style.display = 'flex'; setTimeout(function () { s.style.opacity = '1'; }, 10); }
+        function closeSignup() { var s = document.getElementById('registerSection'); s.style.opacity = '0'; setTimeout(function () { s.style.display = 'none'; s.style.opacity = ''; }, 300); }
+        document.getElementById('registerSection').addEventListener('click', function (e) { if (e.target === this) closeSignup(); });
+        function showToast(msg, type) { var t = document.createElement('div'); t.style.cssText = 'position:fixed;bottom:28px;right:28px;background:' + (type === 'error' ? '#e8603c' : '#0f1e2e') + ';color:#fff;padding:14px 22px;border-radius:10px;font-family:DM Sans,sans-serif;font-size:.88rem;z-index:999999;box-shadow:0 8px 28px rgba(0,0,0,.22);display:flex;align-items:center;gap:10px;border-left:3px solid ' + (type === 'error' ? '#fff' : '#e8603c') + ';max-width:320px;'; t.innerHTML = '<i class="fas ' + (type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle') + '" style="color:' + (type === 'error' ? '#fff' : '#e8603c') + '"></i>' + msg; document.body.appendChild(t); setTimeout(function () { t.style.transition = 'opacity .4s'; t.style.opacity = '0'; setTimeout(function () { t.remove(); }, 400); }, 2800); }
+        $(document).ready(function () {
+            $('#register-btn').click(function () { var n = $('#signup-name').val().trim(), e = $('#signup-email').val().trim(), p = $('#signup-pass').val(), c = $('#signup-cpass').val(); if (!n || !e || !p || !c) { showToast('All fields are required!', 'error'); return; } if (p !== c) { showToast('Passwords do not match!', 'error'); return; } showToast('Registration Successful!', 'success'); $('#signup-name,#signup-email,#signup-pass,#signup-cpass').val(''); setTimeout(closeSignup, 1200); });
+            $('.register-sign-in-btn').click(function () { var e = $('#signin-email').val().trim(), p = $('#signin-pass').val(); if (!e || !p) { showToast('Please fill all fields!', 'error'); return; } showToast('Signed in successfully!', 'success'); setTimeout(closeSignup, 1200); });
+            $('#open-sign-in').click(function (e) { e.preventDefault(); $('#sign-up').fadeOut(250, function () { $('#sign-in').removeClass('d-none').fadeIn(250); }); });
+            $('#open-sign-up').click(function (e) { e.preventDefault(); $('#sign-in').fadeOut(250, function () { $('#sign-up').removeClass('d-none').fadeIn(250); }); });
+            $('#footersubscribeBtn').click(function () { var v = $('#subscribeInput').val().trim(); if (!v) { showToast('Please enter your email!', 'error'); return; } showToast('Thanks for subscribing!', 'success'); $('#subscribeInput').val(''); });
+        });
+        document.getElementById('contactForm').addEventListener('submit', function (e) { e.preventDefault(); var n = document.getElementById('c-name').value.trim(), em = document.getElementById('c-email').value.trim(), s = document.getElementById('c-subject').value, m = document.getElementById('c-message').value.trim(); if (!n || !em || !s || !m) { showToast('Please fill all required fields.', 'error'); return; } showToast('Message sent! We will contact you shortly.', 'success'); this.reset(); });
+        document.addEventListener('DOMContentLoaded', function () {
+            var obs = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in-view'); e.target.querySelectorAll('.reveal-child').forEach(function (c) { c.classList.add('in-view'); }); obs.unobserve(e.target); } }); }, { threshold: .08 });
+            document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function (el) { obs.observe(el); });
+            var cObs = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in-view'); cObs.unobserve(e.target); } }); }, { threshold: .1 });
+            document.querySelectorAll('.reveal-child').forEach(function (el) { cObs.observe(el); });
+        });
+    </script>
+</body>
+
+</html>
